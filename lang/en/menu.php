@@ -1,0 +1,33 @@
+<?php
+
+return [
+    "welcome" => "Welcome 1.",
+    "site" => "Free action blanks",
+    "home" => "Home",
+    "lang" => "Lang",
+    "action" => "Actions",
+    "blanks" => "Blanks",
+    "category" => "Category",
+    "problems" => "Problems",
+    "start" => "Start Condition",
+    "item" => "Item",
+    "room" => "Room",
+    "position" => "Position",
+    "design" => "Design",
+    "bootstrap" => "Bootstrap",
+    "test" => "Test",
+    "icons" => "Icons",
+    "Search" => "Search",
+    "userdata" => "User",
+    "profile" => "Profile",
+    "setting" => "Setting",
+    "logout" => "Logout",
+    "login" => "Login",
+    "register" => "Register",
+    "about" => "About",
+    "contacts" => "Contacts",
+    "work" => "Work",
+    "education" => "Education",
+    ///////////////////////////
+    "project" => "Project",
+];
