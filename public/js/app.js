@@ -52,10 +52,18 @@ function changePoligon(event){
   const usefull=document.getElementById('usefull');
   const understand=document.getElementById('understand');
   const detail=document.getElementById('detail');
-  const popular=document.getElementById('popular');
-  const  mass=[full.value,dificult.value,usefull.value,understand.value,detail.value,popular.value];
-      console.log(mass);
-      genPoligon(mass,'innerHex');
+ const popular = document.getElementById('popular');
+   if (full) {
+    const mass = [
+     full.value,
+     dificult.value,
+     usefull.value,
+     understand.value,
+     detail.value,
+     popular.value];
+    //  console.log(mass);
+    genPoligon(mass, 'innerHex');
+   }
   }
 
 

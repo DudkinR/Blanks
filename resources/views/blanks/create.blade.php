@@ -2,7 +2,10 @@
 @section('title', __("Create new blank"))
 @section('type', "blanks")
 <?php
+if(isset($_GET['category']))
 $cat=$_GET['category'];
+else
+$cat=0;
 ?>
 @section('content')
 <div class="container">
@@ -46,18 +49,17 @@ $cat=$_GET['category'];
 
         <!-- select multiple categories -->
         <div class="form-group">
+
             <label for="categories">{{__("blanks.Categories")}}</label>
             <select name="categories[]" id="categories" class="form-control" multiple required>
                 
                 @foreach($categories as $category)
-                    @if((session("work_categories")!==null&&in_array($category->id,session("work_categories")))||$cat==($category->id))
                         <option value="{{$category->id}}"
                         @if($category->id==$cat) 
                             selected="selected"
                         @endif
                         >{{$category->name}}
                         </option>
-                    @endif
                 @endforeach
             </select>
         </div>
@@ -69,16 +71,15 @@ $cat=$_GET['category'];
                   {{__("blanks.Position")}}     <x-icon.main :name="'plus'" :size=1 :color="'blue'"/>
                 </a>
             </label>
+           
             <select name="positions[]" id="positions" class="form-control" multiple required>
                 @foreach($positions as $posn)
-                    @if(session("work_positions")!==null&&in_array($posn->id,session("work_positions")))
-                        <option value="{{$posn->id}}"
+                   <option value="{{$posn->id}}"
                         @if(in_array($posn->id,$position)) 
                             selected="selected"
                         @endif
                         >{{$posn->abv}} -  {{$posn->name}}
                         </option>
-                    @endif
                 @endforeach
             </select>
         </div>

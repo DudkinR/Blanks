@@ -67,3 +67,9 @@ Route::put("start/{start}/dell", [
     App\Http\Controllers\StartConditionController::class,
     "dell",
 ])->name("start.dell");
+
+//trashSelect 
+Route::any("trashSelect", [
+    App\Http\Controllers\StartConditionController::class,
+    "trashSelect",
+])->name("start.trashSelect");

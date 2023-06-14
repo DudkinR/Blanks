@@ -4,14 +4,11 @@
     "\\app",
     "\\app\\Http",
     "\\app\\Http\\Controllers",
-    "\\public",
-    "\\public\\js",
     "\\resources",
     "\\resources\\views",
     "\\resources\\views\\blanks",
-    "\\resources\\views\\categories",
-    "\\resources\\views\\layouts"
+    "\\routes"
   ],
-  "SelectedNode": "\\resources\\views\\layouts\\app.blade.php",
+  "SelectedNode": "\\app\\Http\\Controllers\\StartConditionController.php",
   "PreviewInSolutionExplorer": false
 }

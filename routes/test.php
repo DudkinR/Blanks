@@ -74,16 +74,13 @@ Route::get("/svg", function () {
 
 Route::get("/ses", function (Request $request) {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
- $mass_need=[ "aaa", "bbb"];
- $mass_prom=[];
- foreach($mass_need as $val){
-    $mass_prom[]= Str::random(32);
- }
- $mass_old=["bbb","aaa"];
- $string=" bbb aaa aaa bbb";
-  $string=str_replace( $mass_old,$mass_prom,$string);
- return str_replace( $mass_prom,$mass_need,$string);
+if (Auth::check()) {
+    return Auth::user()->profile()->first()->lang;
+} else {
+    return "no auth";
+}
 
+      
 
 })->name("ses"); //////////////////////////////////////////////////////////////////////////////////////////////////////////
 // return test/ajax.blade.php

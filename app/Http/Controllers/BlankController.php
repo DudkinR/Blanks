@@ -32,7 +32,7 @@ class BlankController extends Controller
         }
        // return $wrds;
         $categories = \App\Models\Category::where("author_id", "=", Auth::id())
-            ->orderBy("name", "ASC")
+            ->orderBy("name", "DESC")
             ->get();
         if (isset($request->blank)) {
             $level = $request->blank;
@@ -214,12 +214,15 @@ class BlankController extends Controller
             "author_id",
             "=",
             Auth::id()
-        )->get();
+        )
+        ->orderBy('id','DESC')
+        ->get();
         $categories = \App\Models\Category::where(
             "author_id",
             "=",
             Auth::id()
         )->get();
+       // return    $categories;
         return view(
             "blanks.create",
             compact("categories", "positions", "position", "category_id")
@@ -1153,12 +1156,17 @@ class BlankController extends Controller
             "author_id",
             "=",
             Auth::id()
-        )->get();
+        )
+        ->orderby('name', 'asc')
+        ->get();
         $positions = \App\Models\Position::where(
             "author_id",
             "=",
             Auth::id()
-        )->get();
+        )
+         ->orderby('name', 'asc')
+        ->get();
+       // return  $categories;
         return view("blanks.edit", compact("blank", "categories", "positions"));
     }
     //update

@@ -102,3 +102,9 @@ Route::post("/additemAjax", [
     App\Http\Controllers\ItemController::class,
     "additemAjax",
 ])->name("additemAjax");
+
+//item.trashall 
+Route::any("/item/trashall", [
+    App\Http\Controllers\ItemController::class,
+    "trashall",
+])->name("item.trashall");

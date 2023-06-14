@@ -200,18 +200,57 @@ class ItemController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+     public function create_one_item($name, $content, $status, $parent_id, $real_time, $avoid_time, $blank_id, $order, $positions){
+       $item = new \App\Models\Item();
+       $item->name = $name;
+         
+       $item->content = $content;
+       $item->author_id = Auth::id();
+       $item->status = $status;
+       $item->parent_id = $parent_id;
+       $item->real_time = $real_time;
+       $item->avoid_time = $avoid_time;
+       $item->save();
+       $item->positions()->detach();
+       $item->control_positions()->detach();
+       $item->positions()->attach($positions);
+       $item->control_positions()->attach($positions);
+       $blank = \App\Models\Blank::find($blank_id);
+       $blank->items()->attach($item->id, ["order" => $order]);
+       return $item;
+     }
     public function storeSeparate(Request $request){
-       return $lines = $this->textToLines($request->content);
+       $lines = $this->textToLines($request->content);
+
+       $blank = \App\Models\Blank::find($request->blank);
+       $max_order = $blank->items()->max("order")+1;
+       $fragment= "0";
+
+       foreach($lines as $line){
+      
+          $item=$this->create_one_item($request->name.' '.$max_order, $line, 0, $request->parent_id, 0, 0, $request->blank, $max_order, $request->positions);
+          $max_order++;
+          $fragment=$item->id;
+          // close $item 
+
+       }
+       $api_token = Auth::user()->api_token;
+     return redirect()->to(url()->previous() . "#item_" . $fragment)
+      ->withInput([
+          "blank" => $request->blank,
+          "api_token" => $api_token,
+      ])
+      ->with("bl", $request->blank);
   
     }
 public function textToLines($text){
     $dom = new DOMDocument();
+    $text = mb_convert_encoding($text, 'HTML-ENTITIES', 'utf-8');
     $dom->loadHTML($text);
     $lis = $dom->getElementsByTagName('li');
     $linesArray = [];
     foreach($lis as $li){
-        $decodedValue = mb_convert_encoding($li->nodeValue, "UTF-8", "auto");
-        $decodedValue = iconv("UTF-8", "UTF-8//IGNORE", $decodedValue);
+        $decodedValue =$li->nodeValue;
         $linesArray[] = $decodedValue;
     }
 
@@ -228,6 +267,7 @@ public function textToLines($text){
         if(isset($request->separate)&&$request->separate==1){
           return  $this->storeSeparate($request);
         }
+
         $olditem = \App\Models\Item::where("name", "=", $request->name)
             ->where("name", "=", $request->name)
             ->where("content", "=", $request->content)
@@ -674,4 +714,34 @@ public function textToLines($text){
             $od++;
         }
     }
+
+    public function trashall(Request $request)
+    {
+     $blank_id = $request->blank;
+     $items = $request->items;
+      foreach ($items as $item){
+       $itm=explode("_",$item);
+       $item_id=$itm[0];
+       $order=$itm[1];
+       $this->del_from_blank($blank_id, $item_id, $order);
+      }
+      $api_token = Auth::user()->api_token;
+      return back()
+      ->withInput([
+      "blank" => $blank_id,
+      "api_token" => $api_token,
+      ])
+      ->with("bl", $blank_id);
+
+
+    }
+    public function del_from_blank($blank_id, $item_id, $order){
+        $item = \App\Models\Item::find($item_id);
+        $item->blanks()->wherePivot("order", $order)->detach($blank_id);
+        $this->cleanStat($blank_id);
+        $this->newOrderBlank(\App\Models\Blank::find($blank_id));
+        $api_token = Auth::user()->api_token;
+        return true;
+    }
+
 }

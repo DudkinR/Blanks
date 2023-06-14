@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use App\Http\Controllers\RoleController;
+use Illuminate\Support\Facades\Auth;
 class LanguageManager
 {
     /**
@@ -19,8 +20,13 @@ class LanguageManager
         if (session()->has("locale")) {
             app()->setLocale(session()->get("locale"));
         } else {
-            app()->setLocale(config("app.locale"));
-            session()->put("locale", config("app.locale"));
+         if (Auth::check()) {
+            app()->setLocale(Auth::user()->profile()->first()->lang);
+               session()->put("locale", Auth::user()->profile()->first()->lang);
+            } else {
+              app()->setLocale(config("app.locale"));
+             //  session()->put("locale", config("app.locale"));
+            }
         }
         return $next($request);
     }

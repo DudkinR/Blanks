@@ -41,3 +41,4 @@ require __DIR__ . "/user.php";
 require __DIR__ . "/test.php";
 Auth::routes();
 Auth::routes(["verify" => true]);
+

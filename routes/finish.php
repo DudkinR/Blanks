@@ -65,3 +65,8 @@ Route::put("finish/{finish}/dell", [
     App\Http\Controllers\FinishController::class,
     "dell",
 ])->name("finish.dell");
+//finish.trashall
+Route::put("finish/trashall", [
+    App\Http\Controllers\FinishController::class,
+    "trashall",
+])->name("finish.trashall");

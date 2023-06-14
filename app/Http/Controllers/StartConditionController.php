@@ -424,4 +424,22 @@ class StartConditionController extends Controller
             $od++;
         }
     }
+    //trashSelect
+    public function trashSelect(Request $request){
+     $blank=$request->blank;
+     //return  $request-> all();
+     $start=$request->startcondition;
+     foreach($start as $s){
+        $this->del_start_from_blank($blank,$s);
+     }
+     return redirect()->route("blanks.show", [
+             "blank" => \App\Models\Blank::find($blank),
+     ]);
+
+
+    }
+     public function del_start_from_blank($blank_id, $start_id){
+        $blank = \App\Models\Blank::find($blank_id);
+        $blank->startconditions()->detach($start_id);
+     }
 }

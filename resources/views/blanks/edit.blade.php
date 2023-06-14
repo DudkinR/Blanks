@@ -60,14 +60,12 @@
             <label for="categories">{{__("blanks.Categories")}}</label>
             <select name="categories[]" id="categories" class="form-control" multiple>
                 @foreach($categories as $category)
-                    @if(session("work_categories")!==null&&in_array($category->id,session("work_categories")))
-                        <option value="{{$category->id}}"
-                        @if($category->id==$category_id) 
-                            selected="selected"
-                        @endif
-                        >{{$category->name}}
-                        </option>
-                    @endif
+                   <option value="{{$category->id}}"
+                   @if(in_array($category->id,$myc))
+                       selected="selected"
+                   @endif
+                   >{{$category->name}}
+                   </option>
                 @endforeach
             </select>
         </div>
@@ -80,15 +78,13 @@
             <label for="positions">{{__("blanks.Position")}}</label>
             <select name="positions[]" id="positions" class="form-control" multiple>
                 @foreach($positions as $posn)
-                    @if(session("work_positions")!==null&&in_array($posn->id,session("work_positions")))
                         <option value="{{$posn->id}}"
-                        @if(in_array($posn->id,$position)) 
+                        @if(in_array($posn->id,$myp)) 
                             selected="selected"
                         @endif
                         >{{$posn->abv}} -  {{$posn->name}}
                         </option>
-                    @endif
-                @endforeach
+                 @endforeach
             </select>
         </div>
             <legend>{{__("mainf.status")}}</legend>

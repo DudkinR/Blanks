@@ -137,20 +137,24 @@ class StampController extends Controller
             return null;
         }
         $content = e($content);
-        if (
-            \App\Models\Stamp::where("content", "=", $content)
-                ->where("author_id", "=", $user_id)
-                ->count() == 0
-        ) {
+        $data = \App\Models\Stamp::where("content", "=", $content)
+            ->where("author_id", "=", $user_id)
+            ->get();
+        $availableData= [];
+            foreach($data as $stmp) {
+                if ($stmp->content == $content) {
+                    $availableData[] = $stmp;
+                }
+            }
+       if (count($availableData) == 0) {
+    // код
             $stamp = new \App\Models\Stamp();
             $stamp->content = $content;
             $stamp->author_id = $user_id; //Auth::id()
             $stamp->lang = $lang;
             $stamp->save();
         } else {
-            $stamp = \App\Models\Stamp::where("content", "=", $content)
-                ->where("author_id", "=", $user_id)
-                ->first();
+            $stamp = $availableData[0];
         }
         return $stamp;
     }
@@ -372,6 +376,7 @@ class StampController extends Controller
         }
         // convert from url
         $selectedText = urldecode($request->selectedText);
+      //  return      $selectedText         ;
         $stamp = $this->findContent($selectedText, $user_id, $lang);
         $blank->stamps()->detach($stamp->id);
         $blank->stamps()->attach($stamp->id);
